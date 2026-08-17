@@ -1,0 +1,25 @@
+@mixin container {
+  width: min(calc(100% - 40px), var(--max-width));
+  margin-inline: auto;
+}
+
+@mixin label {
+  font-family: var(--font-display);
+  font-size: 0.69rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+@mixin focus-ring {
+  outline: 3px solid color-mix(in srgb, var(--vermilion) 32%, transparent);
+  outline-offset: 3px;
+}
+
+@mixin mobile {
+  @media (max-width: 720px) { @content; }
+}
+
+@mixin tablet {
+  @media (max-width: 960px) { @content; }
+}
