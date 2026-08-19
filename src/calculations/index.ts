@@ -228,7 +228,9 @@ export function calculateEmergencyFund(inputs: Record<string, number>): Calculat
 export function calculateRetirement(inputs: Record<string, number>): CalculatorResult {
   const yearsToRetire = Math.max(0, inputs.retirementAge - inputs.currentAge)
   const annualRate = inputs.annualRate / 100
-  const retirementCorpusNeeded = inputs.monthlyExpensesAfterRetirement * 12 * inputs.retirementDuration
+  const inflationRate = Math.max(0, inputs.inflationRate ?? 0) / 100
+  const monthlyExpensesAtRetirement = inputs.monthlyExpensesAfterRetirement * (1 + inflationRate) ** yearsToRetire
+  const retirementCorpusNeeded = monthlyExpensesAtRetirement * 12 * inputs.retirementDuration
   const projectedCurrentSavings = inputs.currentSavings * (1 + annualRate) ** yearsToRetire
   const annualContributionFactor = yearsToRetire === 0 ? 0 : annualRate === 0 ? yearsToRetire : ((1 + annualRate) ** yearsToRetire - 1) / annualRate
   const projectedMonthlyInvestments = inputs.monthlyInvestment * 12 * annualContributionFactor
@@ -250,31 +252,12 @@ export function calculateRetirement(inputs: Record<string, number>): CalculatorR
       { label: 'Additional corpus needed today', value: additionalCorpusNeeded, kind: 'currency' },
       { label: 'Years until retirement', value: yearsToRetire, kind: 'years' },
       { label: 'Monthly investment needed', value: monthlyInvestmentNeeded, kind: 'currency' },
+      { label: 'Monthly expenses at retirement', value: monthlyExpensesAtRetirement, kind: 'currency' },
     ],
-    insights: [hasSurplus ? 'Your current plan is projected to meet the estimated retirement requirement.' : `Your current monthly investment is ${formatCompactCurrency(inputs.monthlyInvestment)}; reaching the target may require approximately ${formatCompactCurrency(monthlyInvestmentNeeded)} per month.`, 'The required corpus uses the monthly expense amount you expect after retirement, not today’s monthly expenses.'],
+    insights: [hasSurplus ? 'Your current plan is projected to meet the estimated retirement requirement.' : `Your current monthly investment is ${formatCompactCurrency(inputs.monthlyInvestment)}; reaching the target may require approximately ${formatCompactCurrency(monthlyInvestmentNeeded)} per month.`, `${formatCompactCurrency(inputs.monthlyExpensesAfterRetirement)} in today’s monthly expenses becomes approximately ${formatCompactCurrency(monthlyExpensesAtRetirement)} at retirement using ${inputs.inflationRate ?? 0}% inflation.`],
     chart: [
       { label: 'Savings value at retirement', value: projectedCurrentSavings, color: '#254e78' },
       { label: 'Value from monthly investing', value: projectedMonthlyInvestments, color: '#ff5c35' },
-    ],
-  }
-}
-
-export function calculateNetWorth(inputs: Record<string, number>): CalculatorResult {
-  const assets = inputs.cash + inputs.investments + inputs.property + inputs.otherAssets
-  const liabilities = inputs.homeLoan + inputs.otherLoans
-  const netWorth = assets - liabilities
-  return {
-    primary: { label: 'Estimated net worth', value: netWorth, kind: 'currency', tone: netWorth >= 0 ? 'positive' : 'warning' },
-    summary: `Your listed assets minus liabilities equal ${formatCompactCurrency(netWorth)}.`,
-    breakdown: [
-      { label: 'Total assets', value: assets, kind: 'currency' },
-      { label: 'Total liabilities', value: liabilities, kind: 'currency' },
-      { label: 'Debt-to-asset ratio', value: assets ? (liabilities / assets) * 100 : 0, kind: 'percentage' },
-    ],
-    insights: ['Track net worth periodically to see direction, not just today’s number.', 'Asset values and outstanding balances should be updated consistently.'],
-    chart: [
-      { label: 'Assets', value: assets, color: '#163f3a' },
-      { label: 'Liabilities', value: liabilities, color: '#ff5c35' },
     ],
   }
 }
