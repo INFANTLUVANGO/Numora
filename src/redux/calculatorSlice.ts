@@ -13,11 +13,6 @@ const calculatorSlice = createSlice({
   initialState,
   reducers: {
     saveScenario(state, action: PayloadAction<SavedScenario>) {
-      const sameCalculator = state.scenarios.filter((item) => item.calculatorSlug === action.payload.calculatorSlug)
-      if (sameCalculator.length >= 3) {
-        const firstId = sameCalculator[0].id
-        state.scenarios = state.scenarios.filter((item) => item.id !== firstId)
-      }
       state.scenarios.push(action.payload)
     },
     removeScenario(state, action: PayloadAction<string>) {

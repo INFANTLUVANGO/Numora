@@ -32,7 +32,7 @@
   background: var(--forest);
 }
 .logo__mark::after { content: ''; position: absolute; right: -5px; bottom: -5px; width: 14px; height: 14px; border: 3px solid var(--vermilion); transform: rotate(45deg); }
-.logo__mark i { font-family: var(--font-display); font-weight: 800; font-style: normal; }
+.logo__mark i { color: #000; font-family: var(--font-display); font-weight: 800; font-style: normal; }
 .logo__word { font-family: var(--font-display); font-size: 0.95rem; font-weight: 800; letter-spacing: 0.15em; }
 
 .site-nav { display: flex; align-items: center; gap: 6px; }

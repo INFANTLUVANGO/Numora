@@ -1,4 +1,4 @@
-export type CalculatorMode = 'calculate' | 'goal' | 'compare'
+export type CalculatorMode = 'calculate' | 'goal'
 export type ResultKind = 'currency' | 'percentage' | 'number' | 'months' | 'years'
 
 export interface SelectOption {
@@ -58,6 +58,7 @@ export interface CalculatorDefinition {
   accent: 'vermilion' | 'teal' | 'blue' | 'gold' | 'violet'
   tags: string[]
   modes: CalculatorMode[]
+  comparison?: boolean
   fields: InputField[]
   goalFields?: InputField[]
   defaults: Record<string, number>
@@ -74,6 +75,7 @@ export interface CalculatorDefinition {
 export interface SavedScenario {
   id: string
   calculatorSlug: string
+  mode: CalculatorMode
   name: string
   inputs: Record<string, number>
   result: CalculatorResult

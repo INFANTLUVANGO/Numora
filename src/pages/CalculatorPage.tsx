@@ -5,7 +5,6 @@ import { CalculatorCard } from '../components/common/CalculatorCard'
 import { CalculatorForm } from '../components/calculator/CalculatorForm'
 import { ModeTabs } from '../components/calculator/ModeTabs'
 import { ResultPanel } from '../components/calculator/ResultPanel'
-import { ScenarioCompare } from '../components/calculator/ScenarioCompare'
 import { TrustRecord } from '../components/calculator/TrustRecord'
 import { calculators, getCalculator } from '../data/calculators'
 import { useAppDispatch, useAppSelector } from '../redux/hooks'
@@ -20,10 +19,14 @@ function transferInputs(from: string, to: string, resultValue: number, breakdown
   if (from === 'home-affordability-calculator' && to === 'emi-calculator') return { loanAmount: breakdown[0]?.value ?? 0 }
   if (from === 'emergency-fund-calculator' && to === 'sip-calculator') return { monthlyInvestment: Math.max(1000, (breakdown[1]?.value ?? 0) / 12) }
   if (from === 'lumpsum-calculator' && to === 'swp-calculator') return { initialCorpus: resultValue }
-  if (from === 'retirement-calculator' && to === 'swp-calculator') return {
-    initialCorpus: breakdown.find((item) => item.label === 'Projected retirement corpus')?.value ?? 0,
-    monthlyWithdrawal: sourceInputs.monthlyExpensesAfterRetirement,
-    years: sourceInputs.retirementDuration,
+  if (from === 'retirement-calculator' && to === 'swp-calculator') {
+    const yearsToRetire = Math.max(0, sourceInputs.retirementAge - sourceInputs.currentAge)
+    const monthlyExpensesAtRetirement = sourceInputs.monthlyExpensesAfterRetirement * (1 + (sourceInputs.inflationRate ?? 0) / 100) ** yearsToRetire
+    return {
+      initialCorpus: breakdown.find((item) => item.label === 'Projected retirement corpus')?.value ?? 0,
+      monthlyWithdrawal: monthlyExpensesAtRetirement,
+      years: sourceInputs.retirementDuration,
+    }
   }
   return {}
 }
@@ -36,12 +39,14 @@ export function CalculatorPage() {
   const [values, setValues] = useState<Record<string, number>>(calculator.defaults)
   const [textValues, setTextValues] = useState<Record<string, string>>(calculator.textDefaults ?? {})
   const [handoffApplied, setHandoffApplied] = useState(false)
+  const [compareByMode, setCompareByMode] = useState<Record<CalculatorMode, boolean>>({ calculate: false, goal: false })
+  const [isFreshScenario, setIsFreshScenario] = useState(false)
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
   const handoff = useAppSelector((state) => state.calculator.handoff)
   const allScenarios = useAppSelector((state) => state.calculator.scenarios)
-  const scenarios = useMemo(() => allScenarios.filter((item) => item.calculatorSlug === calculator.slug), [allScenarios, calculator.slug])
-  const calculationMode = mode === 'goal' ? 'goal' : 'calculate'
+  const scenarios = useMemo(() => allScenarios.filter((item) => item.calculatorSlug === calculator.slug && item.mode === mode), [allScenarios, calculator.slug, mode])
+  const calculationMode = mode
   const fields = mode === 'goal' && calculator.goalFields ? calculator.goalFields : calculator.fields
   const result = useMemo(() => calculator.calculate(values, calculationMode), [calculator, calculationMode, values])
 
@@ -50,6 +55,8 @@ export function CalculatorPage() {
     setValues(calculator.defaults)
     setTextValues(calculator.textDefaults ?? {})
     setHandoffApplied(false)
+    setCompareByMode({ calculate: false, goal: false })
+    setIsFreshScenario(false)
   }, [calculator])
 
   useEffect(() => {
@@ -62,14 +69,18 @@ export function CalculatorPage() {
 
   if (!found) return <NotFoundPage />
 
+  const compareEnabled = compareByMode[mode]
+
   const changeMode = (nextMode: CalculatorMode) => {
     setMode(nextMode)
     setValues(nextMode === 'goal' ? (calculator.goalDefaults ?? calculator.defaults) : calculator.defaults)
     setTextValues(calculator.textDefaults ?? {})
     setHandoffApplied(false)
+    setIsFreshScenario(false)
   }
 
   const updateValue = (key: string, value: number) => {
+    setIsFreshScenario(false)
     setValues((current) => {
       const next = { ...current, [key]: value }
       if (calculator.slug === 'home-affordability-calculator' && (key === 'monthlySalary' || key === 'totalExpenses')) {
@@ -96,7 +107,23 @@ export function CalculatorPage() {
   const resetInputs = () => {
     setValues(mode === 'goal' ? (calculator.goalDefaults ?? calculator.defaults) : calculator.defaults)
     setTextValues(calculator.textDefaults ?? {})
+    setIsFreshScenario(false)
   }
+
+  const updateTextValue = (key: string, value: string) => {
+    setIsFreshScenario(false)
+    setTextValues((current) => ({ ...current, [key]: value }))
+  }
+
+  const pinCurrentScenario = () => {
+    dispatch(saveScenario({ id: crypto.randomUUID(), calculatorSlug: calculator.slug, mode, name: `Plan ${scenarios.length + 1}`, inputs: values, result }))
+    const blankValues = Object.fromEntries(fields.map((field) => [field.key, 0]))
+    setValues(blankValues)
+    setTextValues(Object.fromEntries((calculator.textDefaults ? Object.keys(calculator.textDefaults) : []).map((key) => [key, ''])))
+    setIsFreshScenario(true)
+  }
+
+  const currentScenario = isFreshScenario ? undefined : { id: 'current', calculatorSlug: calculator.slug, mode, name: 'Current plan', inputs: values, result }
 
   const related = calculator.related.map((relatedSlug) => getCalculator(relatedSlug)).filter(Boolean)
 
@@ -111,15 +138,13 @@ export function CalculatorPage() {
       </div>
 
       <section className="calculator-workspace section-shell">
-        <ModeTabs modes={calculator.modes} active={mode} onChange={changeMode} />
+        <ModeTabs modes={calculator.modes} active={mode} onChange={changeMode} compareEnabled={compareEnabled} onCompareChange={(enabled) => setCompareByMode((current) => ({ ...current, [mode]: enabled }))} showCompare={calculator.comparison !== false} />
         {handoffApplied && <div className="handoff-note"><CheckCircle2 size={17} /> A useful value from your previous calculation has been carried into this tool.</div>}
         <div className="calculator-workspace__grid">
-          <CalculatorForm fields={fields} values={values} textValues={textValues} onChange={updateValue} onTextChange={(key, value) => setTextValues((current) => ({ ...current, [key]: value }))} onReset={resetInputs} />
-          <ResultPanel result={result} onDownload={() => downloadResultPdf({ ...calculator, fields }, { ...values, ...textValues }, result)} nextStep={nextStep} />
+          <CalculatorForm fields={fields} values={values} textValues={textValues} onChange={updateValue} onTextChange={updateTextValue} onReset={resetInputs} />
+          <ResultPanel result={result} onDownload={() => downloadResultPdf({ ...calculator, fields }, { ...values, ...textValues }, result)} nextStep={nextStep} isFresh={isFreshScenario} comparison={{ enabled: compareEnabled, calculatorLabel: calculator.shortTitle, currentScenario, scenarios, canAdd: !isFreshScenario, onAdd: pinCurrentScenario, onRemove: (id) => dispatch(removeScenario(id)) }} />
         </div>
       </section>
-
-      {mode === 'compare' && <ScenarioCompare scenarios={scenarios} onSave={() => dispatch(saveScenario({ id: crypto.randomUUID(), calculatorSlug: calculator.slug, name: `Plan ${scenarios.length + 1}`, inputs: values, result }))} onRemove={(id) => dispatch(removeScenario(id))} />}
 
       <div className="section-shell"><TrustRecord calculator={calculator} /></div>
 
