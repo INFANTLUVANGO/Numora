@@ -1,4 +1,5 @@
-import { ArrowRight, Download, Lightbulb, TrendingUp } from 'lucide-react'
+import { ArrowRight, Check, Download, Lightbulb, LoaderCircle, TriangleAlert, TrendingUp } from 'lucide-react'
+import { useState } from 'react'
 import type { CalculatorResult, SavedScenario } from '../../types/calculator'
 import { formatResult } from '../../utils/formatters'
 import { PinnedComparison } from './ScenarioCompare'
@@ -21,7 +22,8 @@ interface Comparison {
   onRemove: (id: string) => void
 }
 
-export function ResultPanel({ result, onDownload, nextStep, comparison, isFresh }: { result: CalculatorResult; onDownload: () => void; nextStep?: NextStep; comparison?: Comparison; isFresh?: boolean }) {
+export function ResultPanel({ result, onDownload, nextStep, comparison, isFresh }: { result: CalculatorResult; onDownload: () => Promise<void>; nextStep?: NextStep; comparison?: Comparison; isFresh?: boolean }) {
+  const [downloadStatus, setDownloadStatus] = useState<'idle' | 'working' | 'done' | 'error'>('idle')
   const total = result.chart?.reduce((sum, item) => sum + Math.max(0, item.value), 0) || 1
   let cursor = 0
   const gradient = result.chart?.map((item) => {
@@ -31,11 +33,27 @@ export function ResultPanel({ result, onDownload, nextStep, comparison, isFresh 
     return `${item.color} ${start}% ${end}%`
   }).join(', ')
 
+  const downloadPdf = async () => {
+    if (downloadStatus === 'working') return
+    setDownloadStatus('working')
+    try {
+      await onDownload()
+      setDownloadStatus('done')
+      window.setTimeout(() => setDownloadStatus('idle'), 2200)
+    } catch (error) {
+      console.error('NUMORA PDF export failed', error)
+      setDownloadStatus('error')
+    }
+  }
+
+  const DownloadIcon = downloadStatus === 'working' ? LoaderCircle : downloadStatus === 'done' ? Check : downloadStatus === 'error' ? TriangleAlert : Download
+  const downloadLabel = downloadStatus === 'working' ? 'Preparing PDF' : downloadStatus === 'done' ? 'PDF downloaded' : downloadStatus === 'error' ? 'Try PDF again' : 'Download PDF'
+
   return (
     <div className="result-panel">
       <div className="result-panel__top">
         <span className="result-panel__label"><i /><span>YOUR NUMORA RESULT</span></span>
-        <button className="download-button" type="button" onClick={onDownload}><Download size={16} /> Download PDF</button>
+        <button className={`download-button ${downloadStatus === 'working' ? 'is-loading' : ''} ${downloadStatus === 'error' ? 'is-error' : ''}`} type="button" disabled={downloadStatus === 'working'} onClick={downloadPdf}><DownloadIcon size={16} /> {downloadLabel}</button>
       </div>
       {comparison?.enabled && <PinnedComparison calculatorLabel={comparison.calculatorLabel} currentScenario={comparison.currentScenario} scenarios={comparison.scenarios} canAdd={comparison.canAdd} onAdd={comparison.onAdd} onRemove={comparison.onRemove} />}
       {isFresh ? <div className="scenario-ready"><span>NEW PLAN</span><strong>Enter values to compare another plan.</strong></div> : <>

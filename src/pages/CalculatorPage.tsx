@@ -10,6 +10,7 @@ import { calculators, getCalculator } from '../data/calculators'
 import { useAppDispatch, useAppSelector } from '../redux/hooks'
 import { consumeHandoff, removeScenario, saveScenario, setHandoff } from '../redux/calculatorSlice'
 import type { CalculatorMode, CalculatorResult } from '../types/calculator'
+import { isDefined } from '../utils/collections'
 import { downloadResultPdf } from '../utils/pdf'
 import { NotFoundPage } from './NotFoundPage'
 
@@ -46,9 +47,8 @@ export function CalculatorPage() {
   const handoff = useAppSelector((state) => state.calculator.handoff)
   const allScenarios = useAppSelector((state) => state.calculator.scenarios)
   const scenarios = useMemo(() => allScenarios.filter((item) => item.calculatorSlug === calculator.slug && item.mode === mode), [allScenarios, calculator.slug, mode])
-  const calculationMode = mode
   const fields = mode === 'goal' && calculator.goalFields ? calculator.goalFields : calculator.fields
-  const result = useMemo(() => calculator.calculate(values, calculationMode), [calculator, calculationMode, values])
+  const result = useMemo(() => calculator.calculate(values, mode), [calculator, mode, values])
 
   useEffect(() => {
     setMode(calculator.modes[0])
@@ -98,7 +98,9 @@ export function CalculatorPage() {
     navigate(`/calculators/${targetSlug}`)
   }
 
-  const nextStep = calculator.slug === 'lumpsum-calculator'
+  const nextStep = calculator.slug === 'home-affordability-calculator'
+    ? { eyebrow: 'PLANNING A REAL PURCHASE?', title: 'Test the home against your complete monthly life.', description: 'The Home Journey checks comfort, down-payment readiness and the safety buffer together.', action: 'Start Home Journey', onClick: () => navigate('/journey/home-affordability', { state: { intent: 'check-home' } }) }
+    : calculator.slug === 'lumpsum-calculator'
     ? { eyebrow: 'NEXT DECISION', title: 'Turn this corpus into monthly cash flow.', description: 'See how much you could withdraw and what may remain over time.', action: 'Try SWP', onClick: () => handleRelated('swp-calculator') }
     : calculator.slug === 'retirement-calculator'
       ? { eyebrow: 'AFTER RETIREMENT', title: 'See how this corpus may support you.', description: 'Use your projected retirement corpus to model monthly withdrawals and remaining value.', action: 'Plan SWP', onClick: () => handleRelated('swp-calculator') }
@@ -125,7 +127,7 @@ export function CalculatorPage() {
 
   const currentScenario = isFreshScenario ? undefined : { id: 'current', calculatorSlug: calculator.slug, mode, name: 'Current plan', inputs: values, result }
 
-  const related = calculator.related.map((relatedSlug) => getCalculator(relatedSlug)).filter(Boolean)
+  const related = calculator.related.map((relatedSlug) => getCalculator(relatedSlug)).filter(isDefined)
 
   return (
     <div className="calculator-page">
@@ -150,7 +152,7 @@ export function CalculatorPage() {
 
       <section className="related-tools section-shell">
         <div className="section-heading section-heading--split"><div><span className="eyebrow">Continue the journey</span><h2>Use this answer<br />somewhere useful.</h2></div><p>Related tools can carry selected values forward during this visit.</p></div>
-        <div className="related-tools__grid">{related.map((item, index) => item && <div key={item.slug} onClick={(event) => { event.preventDefault(); handleRelated(item.slug) }}><CalculatorCard calculator={item} index={index} compact /></div>)}</div>
+        <div className="related-tools__grid">{related.map((item, index) => <div key={item.slug} onClick={(event) => { event.preventDefault(); handleRelated(item.slug) }}><CalculatorCard calculator={item} index={index} compact /></div>)}</div>
         <button className="text-link related-tools__all" type="button" onClick={() => navigate('/calculators')}>See every calculator <ArrowRight size={17} /></button>
       </section>
     </div>

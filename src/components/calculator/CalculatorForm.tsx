@@ -1,27 +1,19 @@
 import { RotateCcw } from 'lucide-react'
-import { Fragment, useEffect, useState } from 'react'
+import { Fragment } from 'react'
 import type { InputField } from '../../types/calculator'
 import { getCurrencySymbol } from '../../utils/formatters'
+import { NumericInput } from '../inputs/NumericInput'
 
-export function CalculatorForm({ fields, values, textValues = {}, onChange, onTextChange = () => undefined, onReset }: { fields: InputField[]; values: Record<string, number>; textValues?: Record<string, string>; onChange: (key: string, value: number) => void; onTextChange?: (key: string, value: string) => void; onReset: () => void }) {
-  const [draftValues, setDraftValues] = useState<Record<string, string>>(() => Object.fromEntries(fields.map((field) => [field.key, String(values[field.key] ?? '')])))
+interface CalculatorFormProps {
+  fields: InputField[]
+  values: Record<string, number>
+  textValues?: Record<string, string>
+  onChange: (key: string, value: number) => void
+  onTextChange: (key: string, value: string) => void
+  onReset: () => void
+}
 
-  useEffect(() => {
-    setDraftValues((current) => {
-      const next = { ...current }
-      fields.forEach((field) => {
-        if (document.activeElement?.id !== field.key) next[field.key] = String(values[field.key] ?? '')
-      })
-      return next
-    })
-  }, [fields, values])
-
-  const updateNumber = (key: string, rawValue: string) => {
-    const normalizedValue = rawValue.replace(/^0+(?=\d)/, '')
-    setDraftValues((current) => ({ ...current, [key]: normalizedValue }))
-    onChange(key, normalizedValue === '' ? 0 : Number(normalizedValue))
-  }
-
+export function CalculatorForm({ fields, values, textValues = {}, onChange, onTextChange, onReset }: CalculatorFormProps) {
   return (
     <div className="calculator-form">
       <div className="calculator-form__head"><div><span>YOUR INPUTS</span><small>Adjust the numbers to match your situation.</small></div><button type="button" onClick={onReset}><RotateCcw size={14} /> Reset</button></div>
@@ -46,11 +38,7 @@ export function CalculatorForm({ fields, values, textValues = {}, onChange, onTe
                   </select>
                 ) : (
                   <>
-                    <div className="number-input">
-                      {(field.prefix || field.currencyField) && <span>{field.currencyField ? getCurrencySymbol(values[field.currencyField]) : field.prefix}</span>}
-                      <input id={field.key} type="number" min={field.min} max={field.max} step={field.step ?? 1} value={draftValues[field.key] ?? ''} onChange={(event) => updateNumber(field.key, event.target.value)} onBlur={() => setDraftValues((current) => ({ ...current, [field.key]: current[field.key] === '' ? '0' : current[field.key] }))} />
-                      {field.suffix && <span>{field.suffix}</span>}
-                    </div>
+                    <NumericInput id={field.key} value={values[field.key] ?? 0} onChange={(value) => onChange(field.key, value)} prefix={field.currencyField ? getCurrencySymbol(values[field.currencyField]) : field.prefix} suffix={field.suffix} min={field.min} max={field.max} decimal={field.decimal} formatThousands={Boolean(field.prefix || field.currencyField)} />
                     {field.max !== undefined && <input className="range-input" type="range" aria-label={`${field.label} slider`} min={field.min ?? 0} max={field.max} step={field.step ?? 1} value={values[field.key] ?? 0} onChange={(event) => onChange(field.key, Number(event.target.value))} />}
                   </>
                 )}

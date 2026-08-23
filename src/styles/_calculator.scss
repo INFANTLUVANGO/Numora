@@ -66,11 +66,15 @@
 .result-panel__label i { width: 9px; height: 9px; border-radius: 50%; background: var(--vermilion); box-shadow: 0 0 0 5px color-mix(in srgb, var(--vermilion) 14%, transparent); }
 .download-button { display: inline-flex; min-height: 35px; padding: 0 13px; align-items: center; gap: 7px; border: 1px solid var(--line-strong); border-radius: 999px; background: transparent; font-size: 0.72rem; font-weight: 700; }
 .download-button:hover { color: #fff; border-color: var(--forest); background: var(--forest); }
+.download-button:disabled { cursor: wait; opacity: 0.72; }
+.download-button.is-loading svg { animation: pdf-spin 850ms linear infinite; }
+.download-button.is-error { color: var(--vermilion); border-color: var(--vermilion); }
+@keyframes pdf-spin { to { transform: rotate(360deg); } }
 .primary-result { padding: 34px 29px 30px; color: #fff; background: var(--forest); }
 .primary-result small { @include label; display: block; }
 .primary-result strong { display: block; margin: 10px 0 8px; font: 800 clamp(2.7rem, 5vw, 4.8rem)/1 var(--font-display); letter-spacing: -0.065em; }
 .primary-result p { max-width: 620px; margin: 0; font-size: 0.88rem; }
-.result-breakdown { display: grid; grid-template-columns: repeat(3, 1fr); border-bottom: 1px solid var(--line); }
+.result-breakdown { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); border-bottom: 1px solid var(--line); }
 .result-breakdown > div { min-height: 100px; padding: 20px; border-right: 1px solid var(--line); }
 .result-breakdown > div:last-child { border-right: 0; }
 .result-breakdown span, .result-breakdown strong { display: block; }

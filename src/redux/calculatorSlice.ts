@@ -18,9 +18,6 @@ const calculatorSlice = createSlice({
     removeScenario(state, action: PayloadAction<string>) {
       state.scenarios = state.scenarios.filter((item) => item.id !== action.payload)
     },
-    clearCalculatorScenarios(state, action: PayloadAction<string>) {
-      state.scenarios = state.scenarios.filter((item) => item.calculatorSlug !== action.payload)
-    },
     setHandoff(state, action: PayloadAction<CalculatorState['handoff']>) {
       state.handoff = action.payload
     },
@@ -30,5 +27,5 @@ const calculatorSlice = createSlice({
   },
 })
 
-export const { saveScenario, removeScenario, clearCalculatorScenarios, setHandoff, consumeHandoff } = calculatorSlice.actions
+export const { saveScenario, removeScenario, setHandoff, consumeHandoff } = calculatorSlice.actions
 export default calculatorSlice.reducer

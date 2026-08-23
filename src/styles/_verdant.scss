@@ -1,0 +1,102 @@
+[data-theme='verdant'] {
+  body {
+    background-color: var(--paper);
+    background-image:
+      radial-gradient(circle at 92% 8%, color-mix(in srgb, var(--mint) 22%, transparent) 0, transparent 27%),
+      linear-gradient(180deg, color-mix(in srgb, var(--surface) 20%, var(--paper)) 0, var(--paper) 38%);
+    background-attachment: fixed;
+  }
+
+  .site-header {
+    border-bottom-color: color-mix(in srgb, var(--forest) 22%, transparent);
+    background: color-mix(in srgb, var(--surface) 88%, var(--mint));
+    box-shadow: 0 8px 30px rgba(29, 68, 53, 0.08);
+  }
+
+  .home-hero {
+    background:
+      radial-gradient(circle at 76% 44%, color-mix(in srgb, var(--mint) 32%, transparent) 0, transparent 32%),
+      linear-gradient(135deg, color-mix(in srgb, var(--surface) 24%, var(--paper)), var(--paper));
+  }
+
+  .decision-paths {
+    border-block: 1px solid color-mix(in srgb, var(--forest) 18%, var(--line));
+    background: linear-gradient(135deg, color-mix(in srgb, var(--forest-soft) 76%, var(--paper)), color-mix(in srgb, var(--mint) 25%, var(--paper)));
+    box-shadow: 0 0 0 100vmax color-mix(in srgb, var(--forest-soft) 64%, var(--paper));
+    clip-path: inset(0 -100vmax);
+  }
+
+  .numora-showcase__feature {
+    box-shadow: 0 26px 65px rgba(16, 58, 45, 0.25);
+  }
+
+  .numora-highlight,
+  .tool-card,
+  .calculator-mast__badge,
+  .journey-mast__aside,
+  .journey-listing__card {
+    border-color: color-mix(in srgb, var(--forest) 20%, var(--line));
+    box-shadow: 0 13px 34px rgba(33, 73, 58, 0.09);
+  }
+
+  .tool-card:nth-child(3n + 2) {
+    background: color-mix(in srgb, var(--forest-soft) 22%, var(--surface));
+  }
+
+  .trust-panel {
+    border-block: 1px solid color-mix(in srgb, var(--forest) 16%, var(--line));
+    background: linear-gradient(110deg, color-mix(in srgb, var(--mint) 18%, var(--paper)), color-mix(in srgb, var(--surface) 42%, var(--paper)));
+    box-shadow: 0 0 0 100vmax color-mix(in srgb, var(--mint) 12%, var(--paper));
+    clip-path: inset(0 -100vmax);
+  }
+
+  .trust-panel__grid article,
+  .value-grid article,
+  .method-steps article {
+    background: color-mix(in srgb, var(--surface) 78%, transparent);
+  }
+
+  .calculator-mast,
+  .journey-mast {
+    border-bottom: 1px solid color-mix(in srgb, var(--forest) 16%, var(--line));
+    background:
+      radial-gradient(circle at 88% 34%, color-mix(in srgb, var(--mint) 34%, transparent), transparent 31%),
+      linear-gradient(120deg, color-mix(in srgb, var(--surface) 30%, var(--paper)), color-mix(in srgb, var(--forest-soft) 38%, var(--paper)));
+    box-shadow: 0 0 0 100vmax color-mix(in srgb, var(--forest-soft) 32%, var(--paper));
+    clip-path: inset(0 -100vmax);
+  }
+
+  .calculator-form,
+  .result-panel,
+  .journey-step,
+  .journey-decision,
+  .journey-alternatives__grid > button,
+  .buy-rent-result,
+  .feedback-form,
+  .feedback-success {
+    border-color: color-mix(in srgb, var(--forest) 20%, var(--line));
+    box-shadow: 0 16px 42px rgba(31, 70, 55, 0.1);
+  }
+
+  .number-input,
+  .field-block select,
+  .text-input,
+  .journey-field__input,
+  .feedback-form input,
+  .feedback-form textarea {
+    background: color-mix(in srgb, var(--surface) 88%, var(--mint));
+  }
+
+  .mode-tabs,
+  .journey-cushion,
+  .journey-rent-bridge,
+  .scenario-ready,
+  .result-next-step {
+    background: color-mix(in srgb, var(--forest-soft) 72%, var(--surface));
+  }
+
+  .directory-search {
+    border-color: color-mix(in srgb, var(--forest) 28%, var(--line));
+    box-shadow: 7px 7px 0 color-mix(in srgb, var(--forest) 82%, var(--mint));
+  }
+}

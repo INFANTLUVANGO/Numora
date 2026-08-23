@@ -15,7 +15,7 @@ import {
 import type { CalculatorDefinition, InputField } from '../types/calculator'
 
 const money = (key: string, label: string, hint?: string): InputField => ({ key, label, prefix: '₹', min: 0, step: 1000, hint })
-const percent = (key: string, label: string, min = 0, max = 50): InputField => ({ key, label, suffix: '%', min, max, step: 0.1 })
+const percent = (key: string, label: string, min = 0, max = 50): InputField => ({ key, label, suffix: '%', min, max, step: 0.1, decimal: true })
 const years = (key: string, label: string, min = 1, max = 50): InputField => ({ key, label, suffix: 'years', min, max, step: 1 })
 const travelMoney = (key: string, label: string, section: string, hint?: string): InputField => ({ key, label, currencyField: 'currency', min: 0, step: 100, hint, section })
 
@@ -105,8 +105,8 @@ export const calculators: CalculatorDefinition[] = [
     title: 'Home Affordability Calculator',
     shortTitle: 'Home affordability',
     category: 'Borrow',
-    eyebrow: 'Start with what feels comfortable',
-    description: 'Estimate a practical home budget from monthly salary, expenses and the amount you can comfortably pay toward a home loan.',
+    eyebrow: 'Quick home estimate',
+    description: 'Get a quick indicative home budget from the monthly amount you can comfortably put toward a home loan.',
     question: 'How much home can I reasonably afford?',
     icon: 'house',
     accent: 'violet',
@@ -264,7 +264,7 @@ export const calculators: CalculatorDefinition[] = [
     accent: 'teal',
     tags: ['fuel', 'trip cost', 'petrol', 'mileage', 'road trip'],
     modes: ['calculate'],
-    fields: [{ key: 'distance', label: 'Total distance', suffix: 'km', min: 1 }, { key: 'mileage', label: 'Vehicle mileage', suffix: 'km/L', min: 1, step: 0.5 }, money('fuelPrice', 'Fuel price per litre'), money('tolls', 'Tolls and parking'), money('otherCosts', 'Other trip costs'), { key: 'travellers', label: 'Travellers', min: 1, max: 50, step: 1 }],
+    fields: [{ key: 'distance', label: 'Total distance', suffix: 'km', min: 1 }, { key: 'mileage', label: 'Vehicle mileage', suffix: 'km/L', min: 1, step: 1 }, money('fuelPrice', 'Fuel price per litre'), money('tolls', 'Tolls and parking'), money('otherCosts', 'Other trip costs'), { key: 'travellers', label: 'Travellers', min: 1, max: 50, step: 1 }],
     defaults: { distance: 620, mileage: 15, fuelPrice: 104, tolls: 1450, otherCosts: 500, travellers: 4 },
     calculate: calculateFuel,
     assumptions: ['Mileage remains constant for the trip.', 'Fuel price and route charges use the values entered.'],

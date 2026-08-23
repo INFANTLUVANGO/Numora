@@ -10,6 +10,7 @@ export function AppLayout() {
 
   useEffect(() => {
     document.documentElement.dataset.theme = theme
+    document.querySelector('meta[name="theme-color"]')?.setAttribute('content', theme === 'verdant' ? '#f3f0e5' : '#171b19')
   }, [theme])
 
   useEffect(() => {
