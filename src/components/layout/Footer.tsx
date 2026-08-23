@@ -16,7 +16,7 @@ export function Footer() {
         </div>
       </div>
       <div className="site-footer__links">
-        <div><span>Explore</span><Link to="/calculators">All calculators</Link><Link to="/methodology">Methodology</Link><Link to="/request-calculator">Request a tool</Link></div>
+        <div><span>Explore</span><Link to="/calculators">All calculators</Link><Link to="/methodology">Methodology</Link></div>
         <div><span>NUMORA</span><Link to="/about">About</Link><Link to="/feedback">Feedback</Link></div>
         <div><span>Legal</span><Link to="/privacy">Privacy</Link><Link to="/disclaimer">Disclaimer</Link></div>
         <Link className="footer-cta" to="/calculators">Open decision desk <ArrowUpRight size={18} /></Link>

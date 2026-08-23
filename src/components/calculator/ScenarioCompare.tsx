@@ -42,7 +42,7 @@ function scenarioMetrics(scenario: SavedScenario): ResultItem[] {
     case 'emi-calculator':
       return [item(result, 'Principal') ?? metric('Principal', 0, 'currency'), withDetail(item(result, 'Total interest'), 'Total interest', `${annualRate}%/yr`, 'currency'), metric('Tenure', inputs.years ?? 0, 'years', `${inputs.years ?? 0} years`)]
     case 'home-affordability-calculator':
-      return [withDetail(item(result, 'Indicative loan'), 'Indicative loan', `${annualRate}%/yr`, 'currency'), item(result, 'Down payment') ?? metric('Down payment', 0, 'currency'), withDetail(item(result, 'Monthly home-loan payment'), 'Monthly loan payment', `${inputs.years ?? 0} years`, 'currency')]
+      return [withDetail(item(result, 'Estimated loan amount'), 'Estimated loan', `${annualRate}%/yr`, 'currency'), item(result, 'Down payment') ?? metric('Down payment', 0, 'currency'), withDetail(item(result, 'Monthly EMI'), 'Monthly EMI', `${inputs.years ?? 0} years`, 'currency')]
     case 'salary-calculator':
       return [item(result, 'Annual fixed cash salary') ?? metric('Annual fixed salary', 0, 'currency'), item(result, 'Annual bonus paid separately') ?? metric('Annual bonus', 0, 'currency'), item(result, 'Total annual compensation') ?? metric('Total compensation', 0, 'currency')]
     case 'monthly-budget-planner':

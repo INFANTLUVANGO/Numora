@@ -45,7 +45,9 @@ export const formatResult = (value: number, kind: ResultKind = 'number') => {
   return number.format(value)
 }
 
-export const parseNumber = (value: string) => {
-  const parsed = Number(value.replace(/,/g, ''))
-  return Number.isFinite(parsed) ? parsed : 0
+export const formatDuration = (months: number) => {
+  const years = Math.floor(months / 12)
+  const remainingMonths = months % 12
+  if (!years) return `${remainingMonths} months`
+  return remainingMonths ? `${years}y ${remainingMonths}m` : `${years} years`
 }

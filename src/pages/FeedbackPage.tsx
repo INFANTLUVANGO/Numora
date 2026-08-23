@@ -1,5 +1,17 @@
-import { MockForm } from '../components/forms/MockForm'
+import { Check, LockKeyhole } from 'lucide-react'
+import { FeedbackForm } from '../components/forms/FeedbackForm'
 
 export function FeedbackPage() {
-  return <div className="form-page section-shell"><div className="form-page__intro"><span className="page-index">FEEDBACK / FRONTEND DEMO</span><h1>Help make the next decision clearer.</h1><p>Tell us what felt useful, confusing or missing. The current form demonstrates the future interaction and does not submit data.</p></div><MockForm buttonLabel="Preview submission" fields={[{ label: 'What were you using?', name: 'area', type: 'select', placeholder: 'Choose an area', options: ['Homepage and search', 'A calculator', 'Results and insights', 'PDF download', 'Other'] }, { label: 'Your feedback', name: 'feedback', type: 'textarea', placeholder: 'What should NUMORA improve?' }, { label: 'Email (optional in future)', name: 'email', type: 'email', placeholder: 'you@example.com' }]} /></div>
+  return (
+    <div className="feedback-page section-shell">
+      <div className="feedback-page__intro">
+        <span className="page-index">FEEDBACK / DIRECT TO NUMORA</span>
+        <h1>One clear note can improve the next decision.</h1>
+        <p>Share what worked, what felt confusing, or what should become more useful.</p>
+        <div className="feedback-page__trust"><LockKeyhole size={18} /><span><strong>Your calculations stay private.</strong><small>NUMORA sends only the feedback written here and your email so we can identify or reply to the message.</small></span></div>
+        <div className="feedback-page__points"><span><Check size={14} /> No account required</span><span><Check size={14} /> Reply-ready feedback</span></div>
+      </div>
+      <FeedbackForm />
+    </div>
+  )
 }

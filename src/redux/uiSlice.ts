@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit'
 
 interface UiState {
-  theme: 'light' | 'dark'
+  theme: 'verdant' | 'dark'
 }
 
 const initialState: UiState = { theme: 'dark' }
@@ -11,7 +11,7 @@ const uiSlice = createSlice({
   initialState,
   reducers: {
     toggleTheme(state) {
-      state.theme = state.theme === 'light' ? 'dark' : 'light'
+      state.theme = state.theme === 'verdant' ? 'dark' : 'verdant'
     },
   },
 })

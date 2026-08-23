@@ -8,7 +8,8 @@ import { HomePage } from './pages/HomePage'
 import { LegalPage } from './pages/LegalPage'
 import { MethodologyPage } from './pages/MethodologyPage'
 import { NotFoundPage } from './pages/NotFoundPage'
-import { RequestCalculatorPage } from './pages/RequestCalculatorPage'
+import { JourneyPage } from './pages/JourneyPage'
+import { JourneyListingPage } from './pages/JourneyListingPage'
 
 export default function App() {
   return (
@@ -17,12 +18,13 @@ export default function App() {
         <Route index element={<HomePage />} />
         <Route path="calculators" element={<CalculatorsPage />} />
         <Route path="calculators/:slug" element={<CalculatorPage />} />
+        <Route path="journey" element={<JourneyListingPage />} />
+        <Route path="journey/:journeyName" element={<JourneyPage />} />
         <Route path="methodology" element={<MethodologyPage />} />
         <Route path="about" element={<AboutPage />} />
         <Route path="privacy" element={<LegalPage type="privacy" />} />
         <Route path="disclaimer" element={<LegalPage type="disclaimer" />} />
         <Route path="feedback" element={<FeedbackPage />} />
-        <Route path="request-calculator" element={<RequestCalculatorPage />} />
         <Route path="*" element={<NotFoundPage />} />
       </Route>
     </Routes>

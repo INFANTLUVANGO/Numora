@@ -16,6 +16,7 @@ export interface InputField {
   min?: number
   max?: number
   step?: number
+  decimal?: boolean
   hint?: string
   placeholder?: string
   section?: string

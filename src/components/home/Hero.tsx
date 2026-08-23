@@ -10,7 +10,7 @@ export function Hero() {
   return (
     <section className="home-hero section-shell">
       <div className="home-hero__copy">
-              <div className="hero-kicker"><span>India-first decision tools</span><i>15 calculators · no sign-up</i></div>
+              <div className="hero-kicker"><span>India-first decision tools</span><i>12 calculators · no sign-up</i></div>
         <h1>Money,<br /><em>made clear.</em></h1>
         <p>Calculate the number. Understand the trade-off. Take the next step—with tools built around how India earns, saves and plans.</p>
         <div className="hero-search-wrap">

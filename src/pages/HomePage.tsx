@@ -3,13 +3,14 @@ import { Link } from 'react-router-dom'
 import { CalculatorCard } from '../components/common/CalculatorCard'
 import { DecisionPaths } from '../components/home/DecisionPaths'
 import { Hero } from '../components/home/Hero'
-import { MoneyJourney } from '../components/home/MoneyJourney'
 import { TrustPanel } from '../components/home/TrustPanel'
 import { calculators } from '../data/calculators'
+import { isDefined } from '../utils/collections'
 
 export function HomePage() {
   const featured = ['sip-calculator', 'emi-calculator', 'travel-budget-planner', 'monthly-budget-planner', 'retirement-calculator', 'fuel-trip-calculator']
-    .map((slug) => calculators.find((item) => item.slug === slug)!)
+    .map((slug) => calculators.find((item) => item.slug === slug))
+    .filter(isDefined)
 
   return (
     <>
@@ -22,7 +23,6 @@ export function HomePage() {
         </div>
         <div className="tool-grid">{featured.map((calculator, index) => <CalculatorCard key={calculator.slug} calculator={calculator} index={index} />)}</div>
       </section>
-      <MoneyJourney />
       <TrustPanel />
     </>
   )
