@@ -1,5 +1,5 @@
-import type { CalculatorResult } from '../types/calculator'
-import { formatCompactCurrency, formatCurrencyByCode } from '../utils/formatters'
+import type { CalculatorResult } from '../../types/calculator'
+import { formatCompactCurrency, formatCurrencyByCode } from '../../utils/formatters'
 
 export function calculateSplit(inputs: Record<string, number>): CalculatorResult {
   const total = inputs.rent + inputs.utilities + inputs.otherExpenses

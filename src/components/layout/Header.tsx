@@ -30,7 +30,7 @@ export function Header() {
             <NavLink to="/feedback">Feedback</NavLink>
           </nav>
           <div className="site-header__actions">
-            <button className="icon-button" type="button" onClick={() => setSearchOpen(true)} aria-label="Search calculators"><Search size={19} /></button>
+            <button className="icon-button" type="button" onClick={() => setSearchOpen(true)} aria-label="Find a decision" title="Find a decision"><Search size={19} /></button>
             <button
               className="icon-button"
               type="button"

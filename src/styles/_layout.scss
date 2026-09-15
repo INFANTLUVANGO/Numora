@@ -92,7 +92,6 @@
 @include mobile {
   .site-header__inner { height: 66px; }
   .site-nav { top: 66px; right: 14px; left: 14px; }
-  .site-header__actions .icon-button:first-child { display: none; }
   .site-footer { margin-top: 80px; padding: 54px 20px 30px; }
   .site-footer__top { padding-bottom: 40px; }
   .site-footer__links { grid-template-columns: 1fr 1fr; }

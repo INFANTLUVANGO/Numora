@@ -1,0 +1,56 @@
+import { calculateEmi, calculateHomeAffordability } from '../../calculations'
+import type { CalculatorDefinition } from '../../types/calculator'
+import { money, percent, years } from './fields'
+
+export const borrowingCalculators: CalculatorDefinition[] = [
+  {
+    slug: 'emi-calculator',
+    title: 'EMI & Loan Calculator',
+    shortTitle: 'EMI',
+    category: 'Borrow',
+    eyebrow: 'Know the true repayment',
+    description: 'Estimate monthly EMI, total interest, repayment, or an affordable loan amount.',
+    question: 'What will this loan really cost me?',
+    icon: 'landmark',
+    accent: 'blue',
+    tags: ['emi', 'loan', 'monthly payment', 'interest', 'amortisation'],
+    modes: ['calculate', 'goal'],
+    fields: [
+      money('loanAmount', 'Purchase / loan amount', 'For a car, bike or other purchase, enter the full price. For a direct loan, enter the amount borrowed.'),
+      money('downPayment', 'Down payment (optional)', 'Leave this at ₹0 when no upfront payment applies.'),
+      percent('annualRate', 'Annual interest rate', 0, 30),
+      years('years', 'Loan tenure', 1, 35),
+    ],
+    goalFields: [
+      money('affordableEmi', 'Comfortable monthly EMI'),
+      money('downPayment', 'Down payment (optional)', 'Add the upfront amount available to estimate your total purchase budget.'),
+      percent('annualRate', 'Annual interest rate', 0, 30),
+      years('years', 'Loan tenure', 1, 35),
+    ],
+    defaults: { loanAmount: 4000000, downPayment: 0, annualRate: 8.5, years: 20 },
+    goalDefaults: { affordableEmi: 35000, downPayment: 0, annualRate: 8.5, years: 20 },
+    calculate: calculateEmi,
+    assumptions: ['When a down payment is entered, it is subtracted from the purchase amount before calculating the loan.', 'A fixed interest rate applies for the full tenure.', 'Processing fees, insurance and prepayments are excluded.'],
+    related: ['home-affordability-calculator', 'monthly-budget-planner', 'salary-calculator'],
+    reviewed: '16 Aug 2026',
+  },
+  {
+    slug: 'home-affordability-calculator',
+    title: 'Home Affordability Calculator',
+    shortTitle: 'Home affordability',
+    category: 'Borrow',
+    eyebrow: 'Quick home estimate',
+    description: 'Get a quick indicative home budget from the monthly amount you can comfortably put toward a home loan.',
+    question: 'How much home can I reasonably afford?',
+    icon: 'house',
+    accent: 'violet',
+    tags: ['home', 'house budget', 'affordability', 'home loan', 'down payment'],
+    modes: ['calculate'],
+    fields: [money('monthlySalary', 'Monthly salary received'), money('totalExpenses', 'Total monthly expenses', 'Include rent, food, bills, current EMIs and regular spending.'), money('monthlyHomeLoanPayment', 'Amount I can pay monthly for the home loan', 'Starts as salary minus expenses. You can change this amount.'), percent('annualRate', 'Home-loan interest rate', 0, 30), years('years', 'Repayment period', 1, 35), percent('downPaymentPercent', 'Down payment I can pay upfront', 10, 80)],
+    defaults: { monthlySalary: 120000, totalExpenses: 72000, monthlyHomeLoanPayment: 48000, annualRate: 8.5, years: 20, downPaymentPercent: 20 },
+    calculate: calculateHomeAffordability,
+    assumptions: ['The suggested monthly payment starts as salary minus total expenses and can be adjusted by the user.', 'Lender eligibility, registration, taxes and furnishing costs are excluded.'],
+    related: ['emi-calculator', 'salary-calculator', 'monthly-budget-planner'],
+    reviewed: '16 Aug 2026',
+  },
+]

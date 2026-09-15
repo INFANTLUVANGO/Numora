@@ -1,26 +1,45 @@
-import type { CalculatorResult } from '../types/calculator'
-import { formatCompactCurrency } from '../utils/formatters'
-import { annualPercentageToMonthlyRate as monthlyRate } from './helpers'
+import type { CalculatorResult } from '../../types/calculator'
+import { formatCompactCurrency } from '../../utils/formatters'
+import { annualPercentageToMonthlyRate as monthlyRate } from '../helpers'
 
 export function calculateEmi(inputs: Record<string, number>, mode: 'calculate' | 'goal'): CalculatorResult {
   const rate = monthlyRate(inputs.annualRate)
   const months = Math.max(1, inputs.years * 12)
   const multiplier = rate === 0 ? 1 / months : (rate * (1 + rate) ** months) / ((1 + rate) ** months - 1)
-  const principal = mode === 'goal' ? inputs.affordableEmi / multiplier : inputs.loanAmount
+  const enteredAmount = Math.max(0, inputs.loanAmount ?? 0)
+  const enteredDownPayment = Math.max(0, inputs.downPayment ?? 0)
+  const downPayment = mode === 'calculate' ? Math.min(enteredAmount, enteredDownPayment) : enteredDownPayment
+  const principal = mode === 'goal' ? inputs.affordableEmi / multiplier : enteredAmount - downPayment
+  const purchaseAmount = mode === 'goal' ? principal + downPayment : enteredAmount
   const emi = principal * multiplier
   const total = emi * months
   const interest = total - principal
   return {
-    primary: { label: mode === 'goal' ? 'Estimated affordable loan' : 'Monthly EMI', value: mode === 'goal' ? principal : emi, kind: 'currency' },
+    primary: {
+      label: mode === 'goal' ? (downPayment > 0 ? 'Estimated purchase budget' : 'Estimated affordable loan') : 'Monthly EMI',
+      value: mode === 'goal' ? purchaseAmount : emi,
+      kind: 'currency',
+    },
     summary: mode === 'goal'
-      ? `An EMI of ${formatCompactCurrency(inputs.affordableEmi)} may support a loan near ${formatCompactCurrency(principal)}.`
-      : `Your estimated monthly repayment is ${formatCompactCurrency(emi)} for ${inputs.years} years.`,
+      ? downPayment > 0
+        ? `An EMI of ${formatCompactCurrency(inputs.affordableEmi)} may support a ${formatCompactCurrency(principal)} loan and a total purchase budget near ${formatCompactCurrency(purchaseAmount)} with your down payment.`
+        : `An EMI of ${formatCompactCurrency(inputs.affordableEmi)} may support a loan near ${formatCompactCurrency(principal)}.`
+      : downPayment > 0
+        ? `After a ${formatCompactCurrency(downPayment)} down payment, ${formatCompactCurrency(principal)} is financed with an estimated EMI of ${formatCompactCurrency(emi)} for ${inputs.years} years.`
+        : `Your estimated monthly repayment is ${formatCompactCurrency(emi)} for ${inputs.years} years.`,
     breakdown: [
+      ...(downPayment > 0 ? [
+        { label: mode === 'goal' ? 'Estimated purchase budget' : 'Purchase amount', value: purchaseAmount, kind: 'currency' as const },
+        { label: 'Down payment', value: downPayment, kind: 'currency' as const },
+      ] : []),
       { label: 'Principal', value: principal, kind: 'currency' },
       { label: 'Total interest', value: interest, kind: 'currency', tone: 'warning' },
       { label: 'Total repayment', value: total, kind: 'currency' },
     ],
     insights: [
+      ...(downPayment > 0 ? [mode === 'goal'
+        ? `The ${formatCompactCurrency(downPayment)} down payment is added above the affordable loan to estimate the complete purchase budget.`
+        : `The entered down payment reduces the financed amount from ${formatCompactCurrency(enteredAmount)} to ${formatCompactCurrency(principal)}.`] : []),
       `Interest forms ${total ? Math.max(0, (interest / total) * 100).toFixed(0) : 0}% of total repayment.`,
       'Processing fees, insurance, changing rates and prepayments are not included.',
     ],

@@ -1,5 +1,5 @@
-import type { JourneyDefinition, JourneyInputSpec, JourneyIntent, JourneyStepSpec } from '../types/journey'
-import { moneyFlowDefinition } from './moneyFlow'
+import type { JourneyDefinition, JourneyInputSpec, JourneyStepSpec } from '../../types/journey'
+import type { JourneyIntent } from '../../types/homeAffordability'
 
 const homeJourneyIntents: Array<{ id: JourneyIntent; label: string; description: string }> = [
   { id: 'check-home', label: 'Check a specific home', description: 'I know the property price and want to test whether it fits my life.' },
@@ -16,8 +16,6 @@ export const homeJourneyDefinition = {
   description: 'Check affordability, find a comfortable budget, or compare buying with renting and investing.',
   options: homeJourneyIntents,
 } satisfies JourneyDefinition
-
-export const journeyCatalog = [homeJourneyDefinition, moneyFlowDefinition]
 
 export const homeJourneyInputs: JourneyInputSpec[] = [
   { key: 'monthlyIncome', label: 'Monthly take-home income', hint: 'Money received each month.', prefix: '₹', min: 0 },

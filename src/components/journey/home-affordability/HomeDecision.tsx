@@ -1,10 +1,10 @@
 import { ArrowRight, Check, CircleAlert, ShieldCheck, Sparkles } from 'lucide-react'
-import type { HomeJourneyResult } from '../../types/journey'
-import { formatCurrency } from '../../utils/formatters'
+import type { HomeJourneyResult } from '../../../types/homeAffordability'
+import { formatCurrency } from '../../../utils/formatters'
 
 const statusLabels = { comfortable: 'COMFORTABLE MONTHLY CASH FLOW', manageable: 'MANAGEABLE', tight: 'NO MONTHLY SURPLUS', 'not-ready': 'NOT READY YET' }
 
-export function JourneyDecision({ result, onOpenCalculator }: { result: HomeJourneyResult; onOpenCalculator: (slug: string) => void }) {
+export function HomeDecision({ result, onOpenCalculator }: { result: HomeJourneyResult; onOpenCalculator: (slug: string) => void }) {
   const statusIcon = result.status === 'comfortable' ? <ShieldCheck size={20} /> : result.status === 'not-ready' ? <CircleAlert size={20} /> : <Sparkles size={20} />
 
   return (

@@ -1,6 +1,6 @@
-import type { MoneyFlowInputs, MoneyFlowPhase, MoneyFlowPriorityId, MoneyFlowResult } from '../types/moneyFlow'
-import { formatCompactCurrency } from '../utils/formatters'
-import { annualPercentageToMonthlyRate, toNonNegativeNumber } from './helpers'
+import type { MoneyFlowInputs, MoneyFlowPhase, MoneyFlowPriorityId, MoneyFlowResult } from '../../types/moneyFlow'
+import { formatCompactCurrency } from '../../utils/formatters'
+import { annualPercentageToMonthlyRate, toNonNegativeNumber } from '../helpers'
 
 function estimateDebtPayoff(balance: number, annualRate: number, monthlyPayment: number) {
   if (balance <= 0) return 0

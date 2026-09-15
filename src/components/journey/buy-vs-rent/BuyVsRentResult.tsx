@@ -1,6 +1,6 @@
 import { Check, CircleAlert, House, PiggyBank, WalletCards } from 'lucide-react'
 import { useEffect, useState } from 'react'
-import { fixedRentalOptions } from '../../../data/buyVsRent'
+import { fixedRentalOptions } from '../../../data/journeys/buyVsRent'
 import type { BuyVsRentResult as BuyVsRentResultType, RentalComparison, SwpOutcome } from '../../../types/buyVsRent'
 import { formatCurrency, formatDuration } from '../../../utils/formatters'
 

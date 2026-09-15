@@ -1,8 +1,8 @@
 import { ArrowRight, Pin, ShieldCheck, Sprout } from 'lucide-react'
-import type { HomeJourneyResult } from '../../types/journey'
-import { formatCompactCurrency, formatCurrency } from '../../utils/formatters'
+import type { HomeJourneyResult } from '../../../types/homeAffordability'
+import { formatCompactCurrency, formatCurrency } from '../../../utils/formatters'
 
-export function JourneySurplusNotes({ result, onOpenCalculator }: { result: HomeJourneyResult; onOpenCalculator: (slug: string, inputs: Record<string, number>) => void }) {
+export function HomeSurplusNotes({ result, onOpenCalculator }: { result: HomeJourneyResult; onOpenCalculator: (slug: string, inputs: Record<string, number>) => void }) {
   if (result.monthlyRoom <= 0) return null
 
   return (

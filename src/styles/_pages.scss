@@ -4,10 +4,6 @@
 .directory-hero { max-width: 900px; }
 .directory-hero h1 { margin: 16px 0 20px; font-size: clamp(3.2rem, 6.6vw, 6.4rem); }
 .directory-hero > p { max-width: 660px; color: var(--muted); font-size: 1.05rem; }
-.directory-search { display: flex; max-width: 830px; min-height: 66px; margin-top: 38px; padding: 0 19px; align-items: center; gap: 13px; border: 1px solid var(--line-strong); border-radius: 15px; background: var(--surface); box-shadow: 6px 6px 0 var(--forest); }
-.directory-search:focus-within { box-shadow: 6px 6px 0 var(--vermilion); }
-.directory-search input { width: 100%; border: 0; outline: 0; background: transparent; }
-.directory-search span { flex: none; color: var(--muted); font-size: 0.7rem; }
 .directory-controls { display: flex; margin: 75px 0 28px; align-items: center; justify-content: space-between; gap: 25px; border-bottom: 1px solid var(--line); padding-bottom: 16px; }
 .directory-controls > span { display: inline-flex; align-items: center; gap: 7px; @include label; color: var(--muted); }
 .directory-controls > div { display: flex; gap: 7px; flex-wrap: wrap; justify-content: flex-end; }
@@ -95,8 +91,6 @@
 @include mobile {
   .directory-page, .editorial-page, .feedback-page { padding-block: 55px; }
   .directory-hero h1, .editorial-hero h1, .feedback-page__intro h1 { font-size: 3.2rem; }
-  .directory-search { min-height: 58px; box-shadow: 4px 4px 0 var(--forest); }
-  .directory-search span { display: none; }
   .directory-controls { align-items: flex-start; flex-direction: column; margin-top: 55px; }
   .directory-controls > div { justify-content: flex-start; }
   .editorial-hero { padding-bottom: 55px; }
