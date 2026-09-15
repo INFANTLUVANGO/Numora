@@ -1,6 +1,6 @@
 import { ArrowLeft } from 'lucide-react'
 import { Link } from 'react-router-dom'
-import type { JourneyDefinition } from '../../types/journey'
+import type { JourneyDefinition } from '../../../types/journey'
 
 export function JourneyDetailHead({ definition, mode }: { definition: JourneyDefinition; mode: string }) {
   return (

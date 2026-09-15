@@ -1,7 +1,7 @@
 import { ArrowRight } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { NumoraIcon } from '../components/common/NumoraIcon'
-import { journeyCatalog } from '../data/journeys'
+import { journeyCatalog } from '../data/journeys/catalog'
 
 export function JourneyListingPage() {
   return (

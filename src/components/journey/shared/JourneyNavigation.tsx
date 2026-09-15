@@ -1,5 +1,5 @@
 import { ArrowLeft, ArrowRight, Check } from 'lucide-react'
-import type { JourneyStepSpec } from '../../types/journey'
+import type { JourneyStepSpec } from '../../../types/journey'
 
 interface JourneyProgressProps {
   steps: JourneyStepSpec[]

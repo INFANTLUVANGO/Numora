@@ -1,8 +1,8 @@
 import { Gauge, House, WalletCards } from 'lucide-react'
-import type { HomeJourneyResult, JourneyIntent } from '../../types/journey'
-import { formatCurrency } from '../../utils/formatters'
+import type { HomeJourneyResult, JourneyIntent } from '../../../types/homeAffordability'
+import { formatCurrency } from '../../../utils/formatters'
 
-export function JourneyCheckpoint({ stepIndex, result, intent }: { stepIndex: number; result: HomeJourneyResult; intent: JourneyIntent }) {
+export function HomeCheckpoint({ stepIndex, result, intent }: { stepIndex: number; result: HomeJourneyResult; intent: JourneyIntent }) {
   if (stepIndex === 0) {
     return (
       <aside className="journey-checkpoint journey-checkpoint--calm">

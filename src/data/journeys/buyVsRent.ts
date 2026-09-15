@@ -1,5 +1,5 @@
-import type { BuyVsRentInputs } from '../types/buyVsRent'
-import type { JourneyInputSpec, JourneyStepSpec } from '../types/journey'
+import type { BuyVsRentInputs } from '../../types/buyVsRent'
+import type { JourneyInputSpec, JourneyStepSpec } from '../../types/journey'
 
 export const fixedRentalOptions = [10000, 15000, 20000, 25000] as const
 

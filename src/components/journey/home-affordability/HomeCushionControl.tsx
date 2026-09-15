@@ -1,6 +1,6 @@
 const cushionOptions = [10, 15, 20, 25]
 
-export function JourneySurplusSave({ enabled, percent, onToggle, onPercentChange }: { enabled: boolean; percent: number; onToggle: (enabled: boolean) => void; onPercentChange: (percent: number) => void }) {
+export function HomeCushionControl({ enabled, percent, onToggle, onPercentChange }: { enabled: boolean; percent: number; onToggle: (enabled: boolean) => void; onPercentChange: (percent: number) => void }) {
   return (
     <div className="journey-cushion">
       <div>

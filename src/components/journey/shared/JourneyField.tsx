@@ -1,5 +1,5 @@
-import type { JourneyInputSpec } from '../../types/journey'
-import { NumericInput } from '../inputs/NumericInput'
+import type { JourneyInputSpec } from '../../../types/journey'
+import { NumericInput } from '../../inputs/NumericInput'
 
 export function JourneyField({ spec, value, onChange }: { spec: JourneyInputSpec; value: number; onChange: (value: number) => void }) {
   return (

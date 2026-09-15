@@ -1,5 +1,5 @@
-import type { CalculatorResult } from '../types/calculator'
-import { formatCompactCurrency } from '../utils/formatters'
+import type { CalculatorResult } from '../../types/calculator'
+import { formatCompactCurrency } from '../../utils/formatters'
 
 export function calculateSalary(inputs: Record<string, number>): CalculatorResult {
   const bonusIncluded = inputs.bonusIncluded === 1

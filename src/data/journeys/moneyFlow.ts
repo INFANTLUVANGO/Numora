@@ -1,5 +1,5 @@
-import type { JourneyDefinition, JourneyInputSpec, JourneyStepSpec } from '../types/journey'
-import type { MoneyFlowInputs } from '../types/moneyFlow'
+import type { JourneyDefinition, JourneyInputSpec, JourneyStepSpec } from '../../types/journey'
+import type { MoneyFlowInputs } from '../../types/moneyFlow'
 
 export const moneyFlowDefinition = {
   slug: 'money-flow',

@@ -1,8 +1,8 @@
 import { Check, RotateCcw, SlidersHorizontal } from 'lucide-react'
-import type { JourneyAlternative } from '../../types/journey'
-import { formatCurrency, formatDuration } from '../../utils/formatters'
+import type { JourneyAlternative } from '../../../types/homeAffordability'
+import { formatCurrency, formatDuration } from '../../../utils/formatters'
 
-export function JourneyAlternatives({ alternatives, activeId, onApply, onRestore }: { alternatives: JourneyAlternative[]; activeId: string | null; onApply: (alternative: JourneyAlternative) => void; onRestore: () => void }) {
+export function HomeAlternatives({ alternatives, activeId, onApply, onRestore }: { alternatives: JourneyAlternative[]; activeId: string | null; onApply: (alternative: JourneyAlternative) => void; onRestore: () => void }) {
   return (
     <section className="journey-alternatives">
       <div className="section-heading"><span className="eyebrow">What if?</span><h2>Explore a better version of this plan.</h2><p>Only scenarios that fit your monthly cash flow or improve the loan outcome are shown.</p></div>

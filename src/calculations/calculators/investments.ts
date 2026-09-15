@@ -1,6 +1,6 @@
-import type { CalculatorResult } from '../types/calculator'
-import { formatCompactCurrency } from '../utils/formatters'
-import { annualPercentageToMonthlyRate as monthlyRate } from './helpers'
+import type { CalculatorResult } from '../../types/calculator'
+import { formatCompactCurrency } from '../../utils/formatters'
+import { annualPercentageToMonthlyRate as monthlyRate } from '../helpers'
 
 export function calculateSip(inputs: Record<string, number>, mode: 'calculate' | 'goal'): CalculatorResult {
   const rate = monthlyRate(inputs.annualRate)

@@ -1,7 +1,9 @@
-import { calculateEmergencyFund, calculateEmi, calculateSip } from './index'
-import type { HomeJourneyResult, JourneyAlternative, JourneyIntent, JourneyStatus } from '../types/journey'
-import { formatCompactCurrency } from '../utils/formatters'
-import { annualPercentageToMonthlyRate, toNonNegativeNumber } from './helpers'
+import { calculateEmergencyFund } from '../calculators/planning'
+import { calculateEmi } from '../calculators/loans'
+import { calculateSip } from '../calculators/investments'
+import type { HomeJourneyResult, JourneyAlternative, JourneyIntent, JourneyStatus } from '../../types/homeAffordability'
+import { formatCompactCurrency } from '../../utils/formatters'
+import { annualPercentageToMonthlyRate, toNonNegativeNumber } from '../helpers'
 
 type CoreResult = Omit<HomeJourneyResult, 'alternatives'>
 

@@ -95,8 +95,4 @@
     background: color-mix(in srgb, var(--forest-soft) 72%, var(--surface));
   }
 
-  .directory-search {
-    border-color: color-mix(in srgb, var(--forest) 28%, var(--line));
-    box-shadow: 7px 7px 0 color-mix(in srgb, var(--forest) 82%, var(--mint));
-  }
 }

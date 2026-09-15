@@ -1,19 +1,19 @@
 import { ArrowRight, GitCompareArrows, RotateCcw } from 'lucide-react'
 import { useMemo, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { calculateHomeJourney } from '../../../calculations/homeAffordabilityJourney'
-import { homeJourneyDefaults, homeJourneyDefinition, homeJourneyInputs, homeJourneySteps } from '../../../data/journeys'
+import { calculateHomeJourney } from '../../../calculations/journeys/homeAffordability'
+import { homeJourneyDefaults, homeJourneyDefinition, homeJourneyInputs, homeJourneySteps } from '../../../data/journeys/homeAffordability'
 import { setHandoff } from '../../../redux/calculatorSlice'
 import { useAppDispatch } from '../../../redux/hooks'
-import type { JourneyAlternative, JourneyIntent } from '../../../types/journey'
+import type { JourneyAlternative, JourneyIntent } from '../../../types/homeAffordability'
 import { isDefined } from '../../../utils/collections'
-import { JourneyAlternatives } from '../JourneyAlternatives'
-import { JourneyCheckpoint } from '../JourneyCheckpoint'
-import { JourneySurplusSave } from '../JourneyCushionControl'
-import { JourneyDecision } from '../JourneyDecision'
-import { JourneyField } from '../JourneyField'
-import { JourneyProgress, JourneyStepActions } from '../JourneyNavigation'
-import { JourneySurplusNotes } from '../JourneySurplusNotes'
+import { HomeAlternatives } from './HomeAlternatives'
+import { HomeCheckpoint } from './HomeCheckpoint'
+import { HomeCushionControl } from './HomeCushionControl'
+import { HomeDecision } from './HomeDecision'
+import { HomeSurplusNotes } from './HomeSurplusNotes'
+import { JourneyField } from '../shared/JourneyField'
+import { JourneyProgress, JourneyStepActions } from '../shared/JourneyNavigation'
 
 type HomeAffordabilityIntent = Exclude<JourneyIntent, 'buy-vs-rent'>
 
@@ -103,7 +103,7 @@ export function HomeAffordabilityJourney({ intent }: { intent: HomeAffordability
             <h2>{step.title}</h2>
             <p>{step.description}</p>
             <div className="journey-fields">{fields.map((field) => <JourneyField key={field.key} spec={field} value={values[field.key]} onChange={(value) => update(field.key, value)} />)}</div>
-            {stepIndex === 1 && intent === 'find-budget' && <JourneySurplusSave enabled={cushionEnabled} percent={cushionPercent} onToggle={(enabled) => update('monthlyCushionEnabled', enabled ? 1 : 0)} onPercentChange={(percent) => update('monthlyCushionPercent', percent)} />}
+            {stepIndex === 1 && intent === 'find-budget' && <HomeCushionControl enabled={cushionEnabled} percent={cushionPercent} onToggle={(enabled) => update('monthlyCushionEnabled', enabled ? 1 : 0)} onPercentChange={(percent) => update('monthlyCushionPercent', percent)} />}
             <JourneyStepActions
               currentIndex={stepIndex}
               stepCount={homeJourneySteps.length}
@@ -113,7 +113,7 @@ export function HomeAffordabilityJourney({ intent }: { intent: HomeAffordability
               onComplete={completeJourney}
             />
           </div>
-          <JourneyCheckpoint stepIndex={stepIndex} result={result} intent={intent} />
+          <HomeCheckpoint stepIndex={stepIndex} result={result} intent={intent} />
         </div>
 
         {intent === 'check-home' && (
@@ -127,9 +127,9 @@ export function HomeAffordabilityJourney({ intent }: { intent: HomeAffordability
 
       {completed && (
         <>
-          <div id="decision" className="journey-result section-shell"><JourneyDecision result={result} onOpenCalculator={openCalculator} /></div>
-          <div className="section-shell"><JourneyAlternatives alternatives={scenarioResult.alternatives} activeId={activeAlternative} onApply={applyAlternative} onRestore={restoreOriginal} /></div>
-          <JourneySurplusNotes result={result} onOpenCalculator={openCalculator} />
+          <div id="decision" className="journey-result section-shell"><HomeDecision result={result} onOpenCalculator={openCalculator} /></div>
+          <div className="section-shell"><HomeAlternatives alternatives={scenarioResult.alternatives} activeId={activeAlternative} onApply={applyAlternative} onRestore={restoreOriginal} /></div>
+          <HomeSurplusNotes result={result} onOpenCalculator={openCalculator} />
           <p className="journey-disclaimer section-shell">Educational estimate based on your entries—not lending approval or financial advice. The down payment is assumed available; the SIP and emergency-fund figures are illustrative alternatives, not simultaneous commitments.</p>
         </>
       )}

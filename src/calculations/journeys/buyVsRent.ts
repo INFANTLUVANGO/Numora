@@ -1,6 +1,6 @@
-import type { BuyVsRentInputs, BuyVsRentResult, RentalComparison, SwpOutcome } from '../types/buyVsRent'
-import { annualPercentageToMonthlyRate, toNonNegativeNumber } from './helpers'
-import { calculateEmi } from './index'
+import type { BuyVsRentInputs, BuyVsRentResult, RentalComparison, SwpOutcome } from '../../types/buyVsRent'
+import { annualPercentageToMonthlyRate, toNonNegativeNumber } from '../helpers'
+import { calculateEmi } from '../calculators/loans'
 
 function projectMonthlyInvestment(monthlyInvestment: number, annualRate: number, months: number) {
   const monthlyRate = annualPercentageToMonthlyRate(annualRate)
